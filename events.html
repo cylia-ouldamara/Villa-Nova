@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Événements</title>
+    <link rel="stylesheet" href="home_page.css">
+</head>
+
+<body>
+
+    <header class="header">
+        <a href="home_page.html" class="logo" aria-label="Retour à l'accueil VillaNova">
+    
+            <span class="logo-text">VillaNova</span>
+        </a>
+        <nav class="nav" aria-label="Navigation principale">
+            <a href="events.html" class="nav-link">Événements</a>
+        </nav>    
+        <div role="search" class="search-bar">
+            <label for="search-input" class="sr-only">Rechercher un événement</label>
+            <input id="search-input" type="search" placeholder="Rechercher…" aria-label="Rechercher un événement">
+            <button type="button" aria-label="Lancer la recherche">OK</button>
+        </div> 
+        <a href="profile.html" class="btn-profile">Profil</a>
+    </header>
+
+    <main>
+        <section class="page-header">
+            <div class="page-header-inner">
+                <h1>Tous les événements</h1>
+                <p>Trouvez ce qui se passe près de chez vous</p>
+            </div>
+        </section>
+
+        <section class="filters-section" aria-label="Filtrer les événements">
+            <div class="filters">
+                <button class="filter-btn active" type="button" aria-pressed="true">Tous</button>
+                <button class="filter-btn" type="button" aria-pressed="false">Concerts</button>
+                <button class="filter-btn" type="button" aria-pressed="false">Expositions</button>
+                <button class="filter-btn" type="button" aria-pressed="false">Théâtre</button>
+                <button class="filter-btn" type="button" aria-pressed="false">Festivals</button>
+                <button class="filter-btn" type="button" aria-pressed="false">Gratuit</button>
+            </div>
+        </section>
+
+        <section class="events-section" aria-labelledby="events-title">
+            <h2 id="events-title" class="sr-only">Liste des événements</h2>
+            <p class="sr-only" aria-live="polite" id="results-count">3 événements affichés</p>
+
+            <div class="events-grid" id="events-container">
+            </div>
+
+            <nav class="pagination" id="pagination" aria-label="Pagination des événements"></nav>
+        </section>
+
+    </main>
+
+    <footer class="footer">
+        <div class="footer-brand">
+            <span class="logo-text">VillaNova</span>
+            <p>La culture près de chez vous</p>
+        </div>
+        <nav class="footer-nav" aria-label="Découvrir">
+            <h3>Découvrir</h3>
+            <a href="events.html">Événements</a>
+        </nav>
+        <nav class="footer-nav" aria-label="À propos">
+            <h3>À propos</h3>
+            <a href="./sub_files/information.html">Qui sommes-nous ?</a>
+            <a href="./sub_files/contact.html">Contact</a>
+            <a href="./sub_files/partners.html">Partenaires</a>
+        </nav>
+        <nav class="footer-nav" aria-label="Légal">
+            <h3>Légal</h3>
+            <a href="./sub_files/CGU.html">CGU</a>
+            <a href="./sub_files/confidentialities.html">Confidentialité</a>
+            <a href="./sub_files/cookies.html">Cookies</a>
+        </nav>
+        <div class="footer-copy">
+            <p>© 2025 VillaNova. Tous droits réservés.</p>
+        </div>
+    </footer>
+
+    <script src="home_page.js"></script>
+</body>
+
+</html>

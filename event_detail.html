@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Détail événement VillaNova</title>
+    <link rel="stylesheet" href="home_page.css">
+</head>
+
+<body>
+
+    <header class="header">
+        <a href="home_page.html" class="logo" aria-label="Retour à l'accueil VillaNova">
+    
+            <span class="logo-text">VillaNova</span>
+        </a>
+        <nav class="nav" aria-label="Navigation principale">
+            <a href="events.html" class="nav-link">Événements</a>
+        </nav>
+        <div role="search" class="search-bar">
+            <label for="search-input" class="sr-only">Rechercher un événement</label>
+            <input id="search-input" type="search" placeholder="Rechercher…" aria-label="Rechercher un événement">
+            <button type="button" aria-label="Lancer la recherche">OK</button>
+        </div>
+    
+        <a href="profile.html" class="btn-profile">Profil</a>
+    </header>
+
+    <main>
+
+        <div id="loading-state" class="loading-state" aria-live="polite" aria-label="Chargement en cours">
+            <p>Chargement de l'événement…</p>
+        </div>
+
+        <div id="event-content" class="event-detail-wrapper" hidden>
+
+            <div class="detail-back">
+                <a href="events.html" class="btn-back">← Retour aux événements</a>
+            </div>
+
+            <section class="detail-hero" aria-labelledby="detail-title">
+                <div class="detail-img-wrapper">
+                    <img id="detail-img" src="" alt="" loading="eager">
+                </div>
+                <div class="detail-info">
+                    <span id="detail-category" class="event-category"></span>
+                    <h1 id="detail-title" class="detail-title"></h1>
+                    <ul class="detail-meta-list" aria-label="Informations sur l'événement">
+                        <li><span class="meta-label">Date :</span> <span id="detail-date"></span></li>
+                        <li><span class="meta-label">Lieu :</span> <span id="detail-location"></span></li>
+                        <li><span class="meta-label">Tarif :</span> <span id="detail-price"></span></li>
+                    </ul>
+                    <div id="detail-description" class="detail-description"></div>
+                    <a href="#" id="detail-cta" class="btn-primary" target="_blank" rel="noopener">Réserver ma place</a>
+                </div>
+            </section>
+
+        </div>
+
+        <div id="error-state" class="error-state" hidden aria-live="assertive">
+            <p>Événement introuvable.</p>
+            <a href="events.html" class="btn-secondary">Voir tous les événements</a>
+        </div>
+
+    </main>
+
+    <footer class="footer">
+        <div class="footer-brand">
+
+            <span class="logo-text">VillaNova</span>
+            <p>La culture près de chez vous</p>
+        </div>
+        <nav class="footer-nav" aria-label="Découvrir">
+            <h3>Découvrir</h3>
+            <a href="events.html">Événements</a>
+        </nav>
+        <nav class="footer-nav" aria-label="À propos">
+            <h3>À propos</h3>
+            <a href="./sub_files/information.html">Qui sommes-nous ?</a>
+            <a href="./sub_files/contact.html">Contact</a>
+            <a href="./sub_files/partners.html">Partenaires</a>
+        </nav>
+        <nav class="footer-nav" aria-label="Légal">
+            <h3>Légal</h3>
+            <a href="./sub_files/CGU.html">CGU</a>
+            <a href="./sub_files/confidentialities.html">Confidentialité</a>
+            <a href="./sub_files/cookies.html">Cookies</a>
+        </nav>
+        <div class="footer-copy">
+            <p>© 2025 VillaNova. Tous droits réservés.</p>
+        </div>
+    </footer>
+
+    <script src="event_detail.js"></script>
+</body>
+
+</html>
