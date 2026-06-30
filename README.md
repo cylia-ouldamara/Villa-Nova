@@ -67,6 +67,6 @@ Les événements proviennent de l'agenda public Marseille via l'API OpenAgenda v
 ## Auteur
 
 Cylia Ould Amara — La Plateforme_, Marseille  
-Projet réalisé dans le cadre du Bachelor Informatique (Systèmes & Réseaux)
+Projet réalisé dans le cadre du Bachelor Informatique (Administration Systèmes & Réseaux)
 
 [GitHub](https://github.com/cylia-ouldamara/Villa-Nova)
