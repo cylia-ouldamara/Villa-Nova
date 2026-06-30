@@ -38,7 +38,7 @@ function renderEvent(event) {
     const location = event.location?.name || '';
     const city = event.location?.city || '';
     const locationStr = city ? `${location}, ${city}` : location;
-    const timing = event.timings?.[0];
+    const timing = event.firstTiming || event.timings?.[0];
     const dateStr = timing ? formatDateRange(timing.begin, timing.end) : '';
     const isFree = !event.registration || event.registration.length === 0;
     const price = isFree ? 'Gratuit' : (event.registration?.[0]?.description || 'Payant');
@@ -70,10 +70,6 @@ function renderEvent(event) {
 
     loadingState.hidden = true;
     eventContent.hidden = false;
-
-    const titleEl = document.getElementById('detail-title');
-    titleEl.setAttribute('tabindex', '-1');
-    titleEl.focus();
 }
 
 function showError() {

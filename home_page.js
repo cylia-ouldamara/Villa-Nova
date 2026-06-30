@@ -6,10 +6,12 @@ const LIMIT = 12;
 let currentPage = 1;
 let currentCategory = '';
 let totalEvents = 0;
+let searchQuery = ''; 
 
 document.addEventListener('DOMContentLoaded', () => {
     loadEvents(1, '');
     initFilters();
+    initSearch();
 });
 
 async function loadEvents(page, category) {
@@ -22,23 +24,49 @@ async function loadEvents(page, category) {
     container.innerHTML = '<p class="loading-msg">Chargement des événements...</p>';
 
     try {
-        let url = `${BASE_URL}?key=${API_KEY}&limit=${LIMIT}&relative[0]=current&relative[1]=upcoming`;
+        const isSearching = searchQuery.trim() !== '';
+        const fetchLimit = isSearching ? 300 : LIMIT;
 
-        if (page > 1) url += `&offset=${(page - 1) * LIMIT}`;
-        if (category && category !== 'Tous' && category !== 'Gratuit') {
-            url += `&search=${encodeURIComponent(category)}`;
+        let url = `${BASE_URL}?key=${API_KEY}&limit=${fetchLimit}&relative[0]=current&relative[1]=upcoming`;
+
+        if (!isSearching && page > 1) {
+            url += `&offset=${(page - 1) * LIMIT}`;
         }
 
         const res = await fetch(url);
         if (!res.ok) throw new Error(`Erreur HTTP ${res.status}`);
 
         const data = await res.json();
-        totalEvents = data.total || 0;
-
         let events = data.events || [];
 
-        if (category === 'Gratuit') {
-            events = events.filter(e => !e.registration || e.registration.length === 0);
+
+        if (isSearching) {
+            const q = searchQuery.trim().toLowerCase();
+            events = events.filter(e => {
+                const title = (e.title?.fr || e.title?.en || '').toLowerCase();
+                const description = (e.description?.fr || e.description?.en || '').toLowerCase();
+                const keywords = [
+                    ...(e.keywords?.fr || []),
+                    ...(e.keywords?.en || [])
+                ].join(' ').toLowerCase();
+                const location = (e.location?.name || '').toLowerCase();
+
+                return title.includes(q)
+                    || description.includes(q)
+                    || keywords.includes(q)
+                    || location.includes(q);
+            });
+            totalEvents = events.length;
+
+            const start = (page - 1) * LIMIT;
+            events = events.slice(start, start + LIMIT);
+
+        } else {
+            totalEvents = data.total || 0;
+
+            if (category === 'Gratuit') {
+                events = events.filter(e => !e.registration || e.registration.length === 0);
+            }
         }
 
         if (events.length === 0) {
@@ -59,6 +87,7 @@ async function loadEvents(page, category) {
         container.innerHTML = `<p class="error-msg">Impossible de charger les événements. (${err.message})</p>`;
     }
 }
+
 
 function renderPagination(total) {
     const nav = document.getElementById('pagination');
@@ -82,12 +111,10 @@ function renderPagination(total) {
     nav.appendChild(prevBtn);
 
     for (let i = 1; i <= totalPages; i++) {
-        // Afficher : première page, dernière, et les 2 autour de la page courante
         const isNearCurrent = Math.abs(i - currentPage) <= 1;
         const isFirstOrLast = i === 1 || i === totalPages;
 
         if (!isNearCurrent && !isFirstOrLast) {
-            // Afficher "..." si on saute des pages
             if (i === 2 || i === totalPages - 1) {
                 const dots = document.createElement('span');
                 dots.textContent = '…';
@@ -117,6 +144,7 @@ function renderPagination(total) {
     nav.appendChild(nextBtn);
 }
 
+
 function createEventCard(event) {
     const article = document.createElement('article');
     article.className = 'event-card';
@@ -126,7 +154,7 @@ function createEventCard(event) {
         ? event.image.base + event.image.filename
         : '';
     const location = event.location?.name || '';
-    const timing = event.timings?.[0];
+    const timing = event.firstTiming || event.timings?.[0];
     const dateStr = timing ? formatDate(timing.begin) : '';
     const isFree = !event.registration || event.registration.length === 0;
     const price = isFree ? 'Gratuit' : 'Payant';
@@ -150,11 +178,16 @@ function createEventCard(event) {
     return article;
 }
 
+
 function initFilters() {
     const filterBtns = document.querySelectorAll('.filter-btn');
 
     filterBtns.forEach(btn => {
         btn.addEventListener('click', () => {
+            searchQuery = '';
+            const input = document.getElementById('search-input');
+            if (input) input.value = '';
+
             filterBtns.forEach(b => {
                 b.classList.remove('active');
                 b.setAttribute('aria-pressed', 'false');
@@ -166,6 +199,32 @@ function initFilters() {
         });
     });
 }
+
+
+function initSearch() {
+    const input = document.getElementById('search-input');
+    const btn = document.querySelector('.search-bar button');
+    if (!input || !btn) return;
+
+    const runSearch = () => {
+        searchQuery = input.value.trim();
+        if (!searchQuery) return;
+
+        document.querySelectorAll('.filter-btn').forEach(b => {
+            b.classList.remove('active');
+            b.setAttribute('aria-pressed', 'false');
+        });
+
+        loadEvents(1, '');
+    };
+
+    btn.addEventListener('click', runSearch);
+
+    input.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') runSearch();
+    });
+}
+
 
 function formatDate(isoString) {
     if (!isoString) return '';
